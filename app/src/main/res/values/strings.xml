@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">InventoryRealm</string>
+    <string name="delete_action_title">Do you really want to delete an item ? </string>
+    <string name="delete_all_action_title">Do you really want to delete all items ? </string>
+    <string name="positive_delete_action">Yes</string>
+    <string name="negative_delete_action">No</string>
+
+    <string name="save_title">Save item before leaving</string>
+    <string name="positive_save_action">Discard</string>
+    <string name="negative_save_action">Keep Editing</string>
+
+    <string name="Rupee_symbol">\u20B9  </string>
+    <string name="empty_view_text"> Add item by clicking  +  button </string>
+    <string name="addItemActivity_title">Add an item</string>
+    <string name="editor_activity_title">Edit an item</string>
+
+    <!-- String for text header, edit field & up-down button -->
+    <string name="product_name">Product Name</string>
+    <string name="product_name_header">Name of your product</string>
+    <string name="product_price">Product Price</string>
+    <string name="product_quantity">Product Quantity</string>
+    <string name="supplier_name">Supplier Name</string>
+    <string name="supplier_phone_number">Supplier Phone Number</string>
+    <string name="supplier_phone_no_header">"8946877334</string>
+    <string name="down"> - </string>
+    <string name="up"> + </string>
+
+    <!--  String for menu options -->
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="delete_all">Delete all</string>
+    <string name="save">save</string>
+
+
+</resources>

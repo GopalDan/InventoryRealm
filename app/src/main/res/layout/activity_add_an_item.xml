@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.gopal.inventoryrealm.AddAnItemActivity">
+
+    <TextView
+        style="@style/text_header_style"
+        android:layout_marginTop="15dp"
+        android:text="@string/product_name" />
+
+    <EditText
+        android:id="@+id/product_name"
+        style="@style/edit_field_style"
+        android:hint="@string/product_name_header"
+        android:inputType="text" />
+
+    <TextView
+        style="@style/text_header_style"
+        android:text="@string/product_price" />
+
+    <EditText
+        android:id="@+id/product_price"
+        style="@style/edit_field_style"
+        android:hint="@string/product_price"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        style="@style/text_header_style"
+        android:text="@string/product_quantity" />
+
+    <EditText
+        android:id="@+id/product_quantity"
+        style="@style/edit_field_style"
+        android:hint="@string/product_quantity"
+        android:inputType="number" />
+
+    <TextView
+        style="@style/text_header_style"
+        android:text="@string/supplier_name" />
+
+    <EditText
+        android:id="@+id/seller_name"
+        style="@style/edit_field_style"
+        android:hint="@string/supplier_name"
+        android:inputType="text" />
+
+    <TextView
+        style="@style/text_header_style"
+        android:text="@string/supplier_phone_number" />
+
+    <EditText
+        android:id="@+id/seller_phone_number"
+        style="@style/edit_field_style"
+        android:hint="@string/supplier_phone_no_header"
+        android:inputType="phone" />
+
+</LinearLayout>
