@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import io.realm.Realm;
 import io.realm.RealmResults;
 
 /**
@@ -22,6 +24,7 @@ public class ProductRecyclerApapter extends RecyclerView.Adapter<ProductRecycler
     RealmResults<Product> products;
     Context mContext;
     int number;
+    Realm realm;
 
     public ProductRecyclerApapter(Context context,RealmResults<Product> products1) {
         mContext = context;
@@ -36,7 +39,8 @@ public class ProductRecyclerApapter extends RecyclerView.Adapter<ProductRecycler
     }
 
     @Override
-    public void onBindViewHolder(final ProductViewHolder holder, int position) {
+    public void onBindViewHolder(final ProductViewHolder holder, final int position) {
+        final int mPosition = position;
 
         Product product = products.get(position);
         holder.name.setText(product.getProductName());
@@ -44,22 +48,39 @@ public class ProductRecyclerApapter extends RecyclerView.Adapter<ProductRecycler
         holder.quantity.setText(String.valueOf(product.getProductQuantity()));
        /* if(product.getProductQuantity()!=null && product.getProductQuantity()!= "" ){
             number = Integer.valueOf(product.getProductQuantity());
-        }*/
-       number = product.getProductQuantity();
+        }
+       number = product.getProductQuantity();*/
         holder.saleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                number = number - 1;
-                holder.quantity.setText(String.valueOf(number));
+                saleButtonListener(holder,position);
+
             }
         });
 
-//        holder.rootview.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mContext.startActivity(new Intent(mContext,DetailsActivity.class));
-//            }
-//        });
+        holder.rootview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext,DetailsActivity.class);
+                intent.putExtra("key",mPosition);
+                mContext.startActivity(intent);
+              //  mContext.startActivity(new Intent(mContext, DetailsActivity.class)).b
+
+                Toast.makeText(mContext,"Clicked Position: " + mPosition,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saleButtonListener(ProductViewHolder viewHolder,int position){
+        Product product = products.get(position);
+        int quantity = product.getProductQuantity();
+        quantity = quantity -1;
+        viewHolder.quantity.setText(String.valueOf(quantity));
+        realm = Realm.getDefaultInstance();
+
+        realm.beginTransaction();
+        product.setProductQuantity(quantity);
+        realm.commitTransaction();
 
     }
 
@@ -80,7 +101,7 @@ public class ProductRecyclerApapter extends RecyclerView.Adapter<ProductRecycler
             price = view.findViewById(R.id.price);
             quantity = view.findViewById(R.id.quantity);
             saleButton = view.findViewById(R.id.sale_button);
-            rootview = view.findViewById(R.id.rootView);
+            rootview = view.findViewById(R.id.rootElement);
 
         }
     }

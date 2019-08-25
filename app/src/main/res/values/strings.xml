@@ -21,7 +21,7 @@
     <string name="product_quantity">Product Quantity</string>
     <string name="supplier_name">Supplier Name</string>
     <string name="supplier_phone_number">Supplier Phone Number</string>
-    <string name="supplier_phone_no_header">"8946877334</string>
+    <string name="supplier_phone_no_header">"Supplier Phone Number</string>
     <string name="down"> - </string>
     <string name="up"> + </string>
 
@@ -31,5 +31,13 @@
     <string name="delete_all">Delete all</string>
     <string name="save">save</string>
 
+    // BackUp and Restore
+    <string name="No_File_Available">No_File_Available</string>
+    <string name="root">root</string>
+    <string name="Finakya_Folder">BackUpFolder</string>
+    <string name="No_Folder_Available">No_Folder_Available</string>
+    <string name="Restoring_Database_Please_wait">Restoring_Database_Please_wait</string>
+    <string name="Backing_up_Please_wait">Backing_up_Please_wait</string>
+    <string name="No_backup_available_to_restore">No_backup_available_to_restore</string>
 
 </resources>

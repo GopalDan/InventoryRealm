@@ -1,6 +1,7 @@
 package com.example.gopal.inventoryrealm;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,18 +12,34 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class MainActivity extends AppCompatActivity {
-    TextView textView;
-    Realm realm;
+import static com.example.gopal.inventoryrealm.DriveServiceHelper.MY_PREFS_NAME;
 
+public class MainActivity extends AppCompatActivity {
+    TextView textView,emptyTextView;
+    Realm realm;
+    SharedPreferences sharedPreferences;
+    boolean isBackUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.text);
+        emptyTextView = findViewById(R.id.empty_view);
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+         isBackUp = prefs.getBoolean("key1",false);
+        if(isBackUp){
+            RealmInitialization.customInitialization(this);
+        }else{
+            RealmInitialization.defaultInitialization(this);
+        }
+        realm = Realm.getDefaultInstance();
 
         //FAB button is clicked
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -33,25 +50,32 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //Initializing Realm
-        Realm.init(this);
-        realm = Realm.getDefaultInstance();
-
-
-        showProduct();
+        showProduct(new DeleteEventBus());
     }
 
-    public void showProduct(){
+    @Subscribe(threadMode=ThreadMode.MAIN)
+    public void showProduct(DeleteEventBus deleteEventBus){
         RealmResults<Product> results = realm.where(Product.class).findAll();
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new ProductRecyclerApapter(this,results));
+        if(results==null) {
+            emptyTextView.setVisibility(View.VISIBLE);
+        }
+        else {
+            RecyclerView recyclerView = findViewById(R.id.recycler_view);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(new ProductRecyclerApapter(this,results));
+        }
     }
 
     @Override
     protected void onResume() {
-        showProduct();
+        EventBus.getDefault().register(this);
         super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
     }
 
     @Override
@@ -64,15 +88,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.details:
-                startActivity(new Intent(this, DetailsActivity.class));break;
             case R.id.delete_all:
                 // Delete the first item
                 deleteFirstItem();
+               // EventBus.getDefault().post(new DeleteEventBus());
                 break;
+            case R.id.back_up_restore:
+                startActivity(new Intent(this,BackUpActivity.class));
+                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void deleteFirstItem(){
         RealmResults<Product> products = realm.where(Product.class).findAll();
         realm.beginTransaction();

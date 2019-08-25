@@ -27,6 +27,7 @@ public class DetailsActivity extends AppCompatActivity {
     private Uri mCurrentItemUri;
     private String mSupplierPhoneNumber;
     Realm realm;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +55,17 @@ public class DetailsActivity extends AppCompatActivity {
         });
 
         realm = Realm.getDefaultInstance();
+        Bundle extras = getIntent().getExtras();
+        position = extras.getInt("key",1);
 
-        setUpData();
+        setUpData(position);
     }
 
-    public void setUpData(){
+    public void setUpData(int position){
+        RealmResults<Product> products = realm.where(Product.class).findAll();
+        Product product = products.get(position);
 
-        Product product  = realm.where(Product.class).findFirst();
+        //Product product  = realm.where(Product.class).findFirst();
         mSupplierPhoneNumber = product.getSupplierPhoneNumber();
         //Setting the value
         mNameTextView.setText(product.getProductName());
@@ -98,19 +103,28 @@ public class DetailsActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.edit:
                 Intent intent = new Intent(this,EditorActivity.class);
+                intent.putExtra("key1",position);
                 startActivity(intent);
                 break;
             case R.id.delete:
                 // Do delete operation
-                deleteFirstItem();
+                deleteItem();
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
-    public void deleteFirstItem(){
+
+    public void deleteItem(){
         RealmResults<Product> products = realm.where(Product.class).findAll();
+        Product currentProduct = products.get(position);
         realm.beginTransaction();
-        products.deleteFirstFromRealm();
+        currentProduct.deleteFromRealm();
         realm.commitTransaction();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        realm.close();
     }
 }
