@@ -108,8 +108,9 @@ public class AddAnItemActivity extends AppCompatActivity {
                 //save data in database & display it as well
                 saveData();
                 if (shouldBeSaved) {
-                    finish();
                     EventBus.getDefault().post(new DeleteEventBus());
+                    finish();
+
                 }
                 break;
             case android.R.id.home:

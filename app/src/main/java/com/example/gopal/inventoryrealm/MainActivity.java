@@ -30,16 +30,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        EventBus.getDefault().register(this);
         textView = findViewById(R.id.text);
         emptyTextView = findViewById(R.id.empty_view);
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
          isBackUp = prefs.getBoolean("key1",false);
-        if(isBackUp){
+       /* if(isBackUp){
             RealmInitialization.customInitialization(this);
         }else{
             RealmInitialization.defaultInitialization(this);
-        }
-        realm = Realm.getDefaultInstance();
+        }*/
+       Realm.init(this);
+       realm = Realm.getDefaultInstance();
 
         //FAB button is clicked
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -56,10 +58,14 @@ public class MainActivity extends AppCompatActivity {
     @Subscribe(threadMode=ThreadMode.MAIN)
     public void showProduct(DeleteEventBus deleteEventBus){
         RealmResults<Product> results = realm.where(Product.class).findAll();
-        if(results==null) {
+        if(results.size()== 0) {
             emptyTextView.setVisibility(View.VISIBLE);
+            RecyclerView recyclerView = findViewById(R.id.recycler_view);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(new ProductRecyclerApapter(this,results));
         }
         else {
+            emptyTextView.setVisibility(View.GONE);
             RecyclerView recyclerView = findViewById(R.id.recycler_view);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setAdapter(new ProductRecyclerApapter(this,results));
@@ -68,14 +74,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        EventBus.getDefault().register(this);
         super.onResume();
     }
 
+
     @Override
-    protected void onPause() {
+    protected void onDestroy() {
+        super.onDestroy();
         EventBus.getDefault().unregister(this);
-        super.onPause();
     }
 
     @Override
@@ -91,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.delete_all:
                 // Delete the first item
                 deleteFirstItem();
-               // EventBus.getDefault().post(new DeleteEventBus());
+                EventBus.getDefault().post(new DeleteEventBus());
                 break;
             case R.id.back_up_restore:
                 startActivity(new Intent(this,BackUpActivity.class));
@@ -107,4 +113,5 @@ public class MainActivity extends AppCompatActivity {
         products.deleteFirstFromRealm();
         realm.commitTransaction();
     }
+
 }

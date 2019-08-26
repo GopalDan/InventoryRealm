@@ -15,8 +15,6 @@
             android:clickable="true"
             android:background="?android:attr/selectableItemBackground"/>
 
-
-
     <TextView
         android:id="@+id/empty_view"
         android:visibility="gone"

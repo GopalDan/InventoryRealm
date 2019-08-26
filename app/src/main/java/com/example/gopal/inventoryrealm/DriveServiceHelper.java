@@ -202,7 +202,7 @@ public class DriveServiceHelper {
                     //Retrieve file metadata
                     mDriveService.files().get(idOfFile).executeMediaAndDownloadTo(outputStream);
                     File fileMetadata = mDriveService.files().get(idOfFile).execute();
-                    long retrieveDataFileSize = fileMetadata.getSize();
+                    //long retrieveDataFileSize = fileMetadata.getSize();
                       String name = fileMetadata.getName();
                 } catch (FileNotFoundException e) {
                     Log.i("DriveServiceHelper", "File not found" + e.getMessage());
@@ -230,7 +230,7 @@ public class DriveServiceHelper {
 
                     java.io.File backFile = new java.io.File(DOWNLOADS_FOLDER_PATH + "/" + RESTORED_REALM_FILE_NAME);
                     copyFileUsingStream(backFile, orgFile);
-                    //RealmConfigurationChanged();
+                    RealmConfigurationChanged();
                 }
 
                 return null;
@@ -239,7 +239,8 @@ public class DriveServiceHelper {
     }
 
     private void RealmConfigurationChanged(){
-        RealmInitialization.defaultInitialization(context);
+        Realm.init(context);
+      //  RealmInitialization.defaultInitialization(context);
         RealmConfiguration backUpConfig = new RealmConfiguration.Builder()
                 .schemaVersion(0)
                 .compactOnLaunch()

@@ -78,10 +78,10 @@ public class BackUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_back_up);
         context = this.getApplicationContext();
-      //  realm = Realm.getDefaultInstance();
+        realm = Realm.getDefaultInstance();
         // EventBus.getDefault().register(this);
 
-        //REALM_DB_PATH = realm.getPath();
+        REALM_DB_PATH = realm.getPath();
         rootLayout = findViewById(R.id.rootView);
         Button backUp = findViewById(R.id.back_up);
         Button restore = findViewById(R.id.restore);
@@ -222,7 +222,7 @@ public class BackUpActivity extends AppCompatActivity {
                                 public void run() {
                                     SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
                                     *//* backupEmail = serverCallManager.fetchBackupEmail();
-                                     fileId = serverCallManager.fetchDriveFileId();*//*
+                                       fileId = serverCallManager.fetchDriveFileId();*//*
                                     backupEmail = prefs.getString("key4","gt");
                                     fileId = prefs.getString("key5","hdj");
 

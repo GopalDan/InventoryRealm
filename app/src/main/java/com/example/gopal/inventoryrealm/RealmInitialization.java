@@ -25,14 +25,11 @@ public class RealmInitialization {
     public static void customInitialization(Context context){
         Realm.init(context);
         RealmConfiguration backUpConfig = new RealmConfiguration.Builder()
-                .schemaVersion(0)
+                .schemaVersion(1)
                 .compactOnLaunch()
                 .directory(DOWNLOADS_FOLDER_PATH)
                 .name("exportedFile.realm")
                 .build();
         Realm.setDefaultConfiguration(backUpConfig);
     }
-
-
-
 }
