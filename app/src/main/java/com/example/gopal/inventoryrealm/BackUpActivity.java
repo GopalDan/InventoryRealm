@@ -290,6 +290,8 @@ public class BackUpActivity extends AppCompatActivity {
                                             Toast.makeText(context, "Restored", Toast.LENGTH_SHORT).show();
                                             isRestore = false;
                                             progressDialog.dismiss();
+                                            startActivity(new Intent(context,MainActivity.class));
+
                                         }
                                     });
                         } else {

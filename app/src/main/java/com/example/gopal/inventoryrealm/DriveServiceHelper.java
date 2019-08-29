@@ -102,6 +102,7 @@ public class DriveServiceHelper {
 
                 //creating local backup
                 realm = Realm.getDefaultInstance();
+
                 Log.e(TAG,"Value: " + realm.getPath());
                 java.io.File exportRealmFile = null;
                 EXPORT_FILE_PATH = DOWNLOADS_FOLDER_PATH + "/" + EXPORT_REALM_FILE_NAME;
@@ -247,7 +248,13 @@ public class DriveServiceHelper {
                 .directory(DOWNLOADS_FOLDER_PATH)
                 .name("exportedFile.realm")
                 .build();
+//        try {
+//            Realm.migrateRealm(backUpConfig);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
         Realm.setDefaultConfiguration(backUpConfig);
+
     }
 
     private void copyFileUsingStream(java.io.File source, java.io.File dest) throws IOException {
